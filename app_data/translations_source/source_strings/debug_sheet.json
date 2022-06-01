@@ -1,0 +1,22 @@
+{
+  "flow_type": "template",
+  "flow_name": "debug_sheet",
+  "flow_subtype": "debug",
+  "status": "released",
+  "comment": "currently filtered out",
+  "rows": [
+    {
+      "type": "title",
+      "name": "title_1",
+      "value": "Debug",
+      "_nested_name": "title_1"
+    },
+    {
+      "type": "text",
+      "name": "text_1",
+      "value": "This is filtered out in config.ts",
+      "_nested_name": "text_1"
+    }
+  ],
+  "_xlsxPath": "example_sheet.xlsx"
+}

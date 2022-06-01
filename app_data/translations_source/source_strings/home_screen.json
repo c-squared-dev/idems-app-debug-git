@@ -1,0 +1,37 @@
+{
+  "flow_type": "template",
+  "flow_name": "home_screen",
+  "status": "released",
+  "rows": [
+    {
+      "type": "title",
+      "name": "title_1",
+      "value": "C2Dev App",
+      "_nested_name": "title_1"
+    },
+    {
+      "type": "image",
+      "name": "image_1",
+      "value": "home_image.jpg",
+      "_nested_name": "image_1"
+    },
+    {
+      "type": "button",
+      "name": "button_1",
+      "value": "Next Page",
+      "action_list": [
+        {
+          "trigger": "click",
+          "action_id": "go_to",
+          "args": [
+            "page_2"
+          ],
+          "_raw": "click | go_to: page_2",
+          "_cleaned": "click | go_to: page_2"
+        }
+      ],
+      "_nested_name": "button_1"
+    }
+  ],
+  "_xlsxPath": "example_sheet.xlsx"
+}
