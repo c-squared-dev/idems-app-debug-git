@@ -9,7 +9,7 @@ app_constants.APP_SIDEMENU_DEFAULTS.title = "c2dev";
 const config: IDeploymentConfig = {
   name: "c2dev_demo",
   git: {
-    content_repo: "https://github.com/c-squared-dev/idems-app-data-demo",
+    content_repo: "https://github.com/c-squared-dev/idems-app-c2dev-demo",
     content_tag_latest: "1.0.9",
   },
   google_drive: {
