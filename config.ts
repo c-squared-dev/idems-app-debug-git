@@ -10,7 +10,7 @@ const config: IDeploymentConfig = {
   name: "c2dev_demo",
   git: {
     content_repo: "https://github.com/c-squared-dev/idems-app-c2dev-demo",
-    content_tag_latest: "1.0.9",
+    content_tag_latest: "1.0.11",
   },
   google_drive: {
     sheets_folder_id: "1ja6lzbphZaxnVv5mpQ4YHnn2qmxMiEBW",
