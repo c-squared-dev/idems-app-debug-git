@@ -12,18 +12,21 @@ jobs:
   pr_create:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          lfs: true
-          ref: main
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v5
-        with:
-          title: ${{github.ref_name}}
-          branch: ${{github.ref_name}}
-      - name: Check outputs
-        if: ${{ steps.cpr.outputs.pull-request-number }}
-        run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+      - run: gh pr create -B main -H ${{github.ref_name}} --title 'Merge ${{github.ref_name}}' --body 'Created by Github action'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Reset promotion branch
+      #   run: |
+      #     git fetch origin ${{github.ref_name}}:${{github.ref_name}}
+      #     git reset --hard ${{github.ref_name}}
+      # - name: Create Pull Request
+      #   id: cpr
+      #   uses: peter-evans/create-pull-request@v5
+      #   with:
+      #     title: ${{github.ref_name}}
+      #     branch: main
+      # - name: Check outputs
+      #   if: ${{ steps.cpr.outputs.pull-request-number }}
+      #   run: |
+      #     echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+      #     echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
