@@ -1,8 +1,7 @@
 # Create a PR for new content branches
 
 # SETUP
-# See https://github.com/marketplace/actions/create-pull-request#workflow-permissions  
-
+# See https://github.com/marketplace/actions/create-pull-request#workflow-permissions
 
 name: PR - Create
 on:
@@ -17,11 +16,12 @@ jobs:
         with:
           lfs: true
           ref: "${{github.event.inputs.build_branch}}"
-      - name: Checkout LFS objects
-        run: git lfs checkout
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v5
+        with:
+          base: main
+          branch: $GITHUB_REF_NAME
       - name: Check outputs
         if: ${{ steps.cpr.outputs.pull-request-number }}
         run: |
