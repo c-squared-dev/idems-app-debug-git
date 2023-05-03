@@ -6,7 +6,7 @@
     {
       "type": "title",
       "name": "title_1",
-      "value": "Debug Git Repo 1",
+      "value": "Debug Git Repo",
       "_translations": {
         "value": {}
       },
@@ -32,9 +32,7 @@
         {
           "trigger": "click",
           "action_id": "go_to",
-          "args": [
-            "page_2"
-          ],
+          "args": ["page_2"],
           "_raw": "click | go_to: page_2",
           "_cleaned": "click | go_to: page_2"
         }
