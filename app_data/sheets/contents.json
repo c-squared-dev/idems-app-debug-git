@@ -22,8 +22,9 @@
     "weekly_workshops": {
       "flow_type": "template",
       "flow_name": "weekly_workshops",
-      "_xlsxPath": "subfolder_1/duplicate_sheet_1.xlsx"
+      "_xlsxPath": "duplicate_sheet_1.xlsx"
     }
   },
-  "tour": {}
+  "tour": {},
+  "data_pipe": {}
 }
