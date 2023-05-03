@@ -1,4 +1,5 @@
 # Create a PR for new content branches
+# https://cli.github.com/manual/gh_pr_create
 
 # SETUP
 # See https://github.com/marketplace/actions/create-pull-request#workflow-permissions
@@ -12,7 +13,8 @@ jobs:
   pr_create:
     runs-on: ubuntu-latest
     steps:
-      - run: gh pr create -B main -H ${{github.ref_name}} --title 'Merge ${{github.ref_name}}' --body 'Created by Github action'
+      - uses: actions/checkout@v3
+      - run: gh pr create --base main --head '${{github.ref_name}}'' --title 'Merge ${{github.ref_name}}' --body 'Created by Github action'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # - name: Reset promotion branch
