@@ -1,5 +1,4 @@
-/*
-!/app_data
-!/*.config.ts
-!/.gitignore
-!/README.md
+app_data
+cache
+tasks
+config.json
