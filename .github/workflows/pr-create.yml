@@ -21,7 +21,7 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           base: main
-          branch: $GITHUB_REF_NAME
+          branch: ${{github.ref_name}}
       - name: Check outputs
         if: ${{ steps.cpr.outputs.pull-request-number }}
         run: |
