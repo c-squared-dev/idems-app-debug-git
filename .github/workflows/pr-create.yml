@@ -20,8 +20,9 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
-          base: ${{github.ref_name}}
-          branch: main
+          title: ${{github.ref_name}}
+          base: main
+          delete-branch: true
       - name: Check outputs
         if: ${{ steps.cpr.outputs.pull-request-number }}
         run: |
