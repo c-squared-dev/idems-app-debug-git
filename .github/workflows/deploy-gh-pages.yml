@@ -12,6 +12,11 @@ on:
     branches:
       - main
 
+env:
+  # TODO - should get from repo (used to deploy to github pages nested folder)
+  # Not required if using custom domain (TBC)
+  base-href: idems-app-debug-git
+
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 concurrency:
   group: "pages"
@@ -22,6 +27,8 @@ jobs:
     uses: ./.github/workflows/app-build.yml
     with:
       artifact-name: github-pages
+      build-flags: --base-href ${{env.base-href}}
+
   deploy_gh_pages:
     needs: build_action
     permissions:

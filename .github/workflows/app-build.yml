@@ -11,6 +11,10 @@ on:
         description: Name of the artifact to upload
         type: string
         default: www
+      build-flags:
+        description: Additional flags to pass to build command (e.g. base-href)
+        type: string
+        default: ""
   # TODO - may need to also pass secrets here if working with encrypted deployments (to test)
 env:
   # TODO - extract from config (would need to be done in separate action that first checks out)
@@ -58,7 +62,7 @@ jobs:
           yarn workflow deployment set $DEPLOYMENT_NAME
           echo "export const firebaseConfig = {\"apiKey\":\"\"}" > src/environments/firebaseConfig.ts
       - name: Build
-        run: yarn build
+        run: yarn build ${{inputs.build-flags}}
         # Use github pages upload artifact action as also compresses into tar
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1.0.8
