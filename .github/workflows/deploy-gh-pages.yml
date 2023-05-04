@@ -6,6 +6,10 @@
 # Ensure GitHub Pages has been enabled for actions in settings, example url:
 # https://github.com/{org}/{repo}/settings/pages
 
+# Known Issues
+# Github pages does not support SPA routing, will either need to use app with hashRouter
+# or add cloudflare cdn and redirect rules
+
 name: Deploy - GH Pages
 on:
   push:

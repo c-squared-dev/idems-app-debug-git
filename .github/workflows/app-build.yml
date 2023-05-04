@@ -60,7 +60,7 @@ jobs:
       - name: Set deployment
         run: |
           yarn workflow deployment set $DEPLOYMENT_NAME
-          echo "export const firebaseConfig = {\"apiKey\":\"\"}" > src/environments/firebaseConfig.ts
+          echo "export const firebaseConfig = {\"apiKey\":\"AIzaSyDKF0Pj1JEfBgOKb0WOqmNs_y8ur1g67f8\"}" > src/environments/firebaseConfig.ts
       - name: Build
         run: yarn build ${{inputs.build-flags}}
         # Use github pages upload artifact action as also compresses into tar
