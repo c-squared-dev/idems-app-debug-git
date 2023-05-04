@@ -17,5 +17,6 @@ jobs:
         with:
           lfs: true
       - name: Build app
-        uses: .github/workflows/app-build.yml
-# https://colinsalmcorner.com/musings-on-reusable-workflows/
+        uses: ./.github/workflows/app-build.yml
+      # TODO - retrieve build asset and populate to local www folder
+      # TODO - configure firebase as part of deployment and deploy www folder

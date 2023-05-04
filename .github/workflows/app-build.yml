@@ -1,4 +1,5 @@
 # Create a reusable workflow to build deployment app
+# https://colinsalmcorner.com/musings-on-reusable-workflows/
 
 ############# SECRETS #############
 # DEPLOYMENT_PRIVATE_KEY - (optional) deployment private key used to decrypt encrypted deployment
