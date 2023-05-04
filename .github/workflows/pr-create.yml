@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: gh pr create --base main --head ${{github.ref_name}} --title 'Merge ${{github.ref_name}}' --body 'Created by Github action'
+      - run: |
+          gh pr list --base main --head ${{github.ref_name}}
+          gh pr create --base main --head ${{github.ref_name}} --title 'Merge ${{github.ref_name}}' --body 'Created by Github action'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
