@@ -11,12 +11,12 @@ on:
       - content/*
 jobs:
   build:
+    uses: ./.github/workflows/app-build.yml
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           lfs: true
-      - name: Build app
-        uses: ./.github/workflows/app-build.yml
-      # TODO - retrieve build asset and populate to local www folder
-      # TODO - configure firebase as part of deployment and deploy www folder
+    # TODO - retrieve build asset and populate to local www folder
+    # TODO - configure firebase as part of deployment and deploy www folder
