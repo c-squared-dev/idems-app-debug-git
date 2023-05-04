@@ -1,0 +1,31 @@
+# Build and deploy main branch app to github pages
+# https://github.com/actions/deploy-pages
+
+# Setup
+# Ensure GitHub Pages has been enabled for actions in settings, example url:
+# https://github.com/{org}/{repo}/settings/pages
+
+name: Deploy - GH Pages
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    uses: ./.github/workflows/app-build.yml
+    with:
+      artifact-name: github-pages
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
