@@ -16,7 +16,7 @@ jobs:
     with:
       artifact-name: github-pages
   deploy_gh_pages:
-    needs: build
+    needs: build_action
     permissions:
       pages: write
       id-token: write
