@@ -14,7 +14,7 @@ jobs:
   build:
     uses: ./.github/workflows/app-build.yml
     with:
-      artifact_name: actions/upload-pages-artifact
+      artifact-name: actions/upload-pages-artifact
   deploy:
     needs: build
     permissions:
