@@ -44,16 +44,15 @@ jobs:
             ${{ runner.os }}-node-modules-yarn-v1-
       - name: debug log
         run: |
-          echo $(ls)
           echo $(ls .idems_app/deployments)
           echo $(ls .idems_app/deployments/$DEPLOYMENT_NAME)
-      # - name: Install node modules
-      #   run: yarn install
+      - name: Install node modules
+        run: yarn install
 
       # TODO - populate firebase as part of deployment set
-      # - name: set deployment
-      #   run: |
-      #     yarn workflow deployment set $DEPLOYMENT_NAME
-      #     echo "export const firebaseConfig = {}" > src/environments/firebaseConfig.ts
+      - name: set deployment
+        run: |
+          yarn workflow deployment set $DEPLOYMENT_NAME
+          echo "export const firebaseConfig = {}" > src/environments/firebaseConfig.ts
       # - name: build
       #   run: yarn build
