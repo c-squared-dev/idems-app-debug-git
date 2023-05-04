@@ -61,4 +61,5 @@ jobs:
           name: www
           path: www/**
           if-no-files-found: error
+          retention-days: 1
 # https://colinsalmcorner.com/musings-on-reusable-workflows/
