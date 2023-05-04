@@ -28,7 +28,7 @@ jobs:
           lfs: true
           path: ".idems_app/deployments/$DEPLOYMENT_NAME"
       - name: Populate Encryption key
-        if: $DEPLOYMENT_PRIVATE_KEY
+        if: env.DEPLOYMENT_PRIVATE_KEY
         run: echo $DEPLOYMENT_PRIVATE_KEY > .idems_app/deployments/$DEPLOYMENT_NAME/encrypted/private.key
       - name: Setup Node
         uses: actions/setup-node@v3
