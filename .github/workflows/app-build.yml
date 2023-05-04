@@ -4,10 +4,14 @@
 ############# SECRETS #############
 # DEPLOYMENT_PRIVATE_KEY - (optional) deployment private key used to decrypt encrypted deployment
 
-name: App - Build
 on:
   workflow_call:
-  # TODO - consider any secrets or inputs that should be passed
+    inputs:
+      artifact-name:
+        description: Name of the artifact to upload
+        type: string
+        default: www
+  # TODO - may need to also pass secrets here if working with encrypted deployments (to test)
 env:
   # TODO - extract from config (would need to be done in separate action that first checks out)
   DEPLOYMENT_NAME: debug_git
@@ -58,8 +62,8 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.2
         with:
-          name: www
-          path: www/**
+          name: ${{inputs.artifact-name}}
+          path: www/
           if-no-files-found: error
           retention-days: 1
 # https://colinsalmcorner.com/musings-on-reusable-workflows/

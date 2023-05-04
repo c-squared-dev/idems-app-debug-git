@@ -4,28 +4,28 @@
 ############# SECRETS #############
 # DEPLOYMENT_PRIVATE_KEY - (optional) deployment private key used to decrypt encrypted deployment
 
-name: PR - Preview
+name: Deploy - GH Pages
 on:
   push:
     branches:
+      - main
       - content/*
 jobs:
   build:
     uses: ./.github/workflows/app-build.yml
     with:
-      artifact-name: pr-preview
+      artifact_name: actions/upload-pages-artifact
   deploy:
     needs: build
+    permissions:
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v3
-        with:
-          lfs: true
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: pr-preview
-          path: www/
-      # TODO - configure firebase as part of deployment and deploy www folder
-      - name: deploy
-        run: ls
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
