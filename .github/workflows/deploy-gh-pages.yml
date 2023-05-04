@@ -32,7 +32,7 @@ jobs:
         id: pages
         uses: actions/configure-pages@v3
       - name: Debug outputs
-        run: echo $(toJSON(${{steps.pages.outputs}}))
+        run: echo '${{ toJSON(steps.pages.outputs) }}'
 
   build_action:
     needs: configure
