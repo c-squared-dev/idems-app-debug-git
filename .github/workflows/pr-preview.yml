@@ -10,11 +10,11 @@ on:
     branches:
       - content/*
 jobs:
-  build:
+  build_action:
     uses: ./.github/workflows/app-build.yml
     with:
       artifact-name: pr-preview
-  deploy:
+  deploy_preview:
     needs: build
     runs-on: ubuntu-latest
     steps:

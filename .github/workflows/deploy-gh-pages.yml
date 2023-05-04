@@ -11,11 +11,11 @@ on:
     branches:
       - main
 jobs:
-  build:
+  build_action:
     uses: ./.github/workflows/app-build.yml
     with:
       artifact-name: github-pages
-  deploy:
+  deploy_gh_pages:
     needs: build
     permissions:
       pages: write
