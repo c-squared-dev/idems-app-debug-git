@@ -1,7 +1,7 @@
 # Create a PR for new content branches
 # https://cli.github.com/manual/gh_pr_create
 
-name: PR - Create
+name: PR - Preview
 on:
   push:
     branches:
@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           lfs: true
-          repository: "https://github.com/IDEMSInternational/parenting-app-ui.git"
+          repository: "IDEMSInternational/parenting-app-ui.git"
       - uses: actions/checkout@v3
         with:
           lfs: true
