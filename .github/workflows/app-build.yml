@@ -61,7 +61,7 @@ jobs:
         run: yarn build
         # Use github pages upload artifact action as also compresses into tar
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v1.0.8
         with:
           path: "www/"
           name: ${{inputs.artifact-name}}

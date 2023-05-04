@@ -32,6 +32,8 @@ jobs:
           mkdir www
           tar -xf artifact.tar --directory www
       # TODO - configure firebase as part of deployment and deploy www folder
+      # NOTE - could be worth waiting for github pages preview support (https://github.com/actions/deploy-pages)
+      # https://github.com/actions/deploy-pages/pull/61
       - name: deploy
         run: |
           ls

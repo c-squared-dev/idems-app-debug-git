@@ -1,5 +1,6 @@
 # Build and deploy main branch app to github pages
 # https://github.com/actions/deploy-pages
+# https://github.com/actions/starter-workflows/blob/main/pages/static.yml
 
 # Setup
 # Ensure GitHub Pages has been enabled for actions in settings, example url:
@@ -10,6 +11,12 @@ on:
   push:
     branches:
       - main
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   build_action:
     uses: ./.github/workflows/app-build.yml
@@ -26,6 +33,13 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+        with:
+          artifact_name: github-pages
+          preview: false
