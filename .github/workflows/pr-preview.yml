@@ -1,0 +1,41 @@
+# Create a PR for new content branches
+# https://cli.github.com/manual/gh_pr_create
+
+name: PR - Create
+on:
+  push:
+    branches:
+      - content/*
+env:
+  # TODO - extract from config
+  DEPLOYMENT_NAME: debug_git
+jobs:
+  setup_app_repo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+          repository: "https://github.com/IDEMSInternational/parenting-app-ui.git"
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+          path: ".idems_app/deployments/$DEPLOYMENT_NAME"
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ./.yarn/cache
+          # If cachebusting required (e.g. breaking yarn changes on update) change `v1` to another number
+          key: ${{ runner.os }}-node-modules-yarn-v1-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-yarn-v1-
+      - run: yarn install
+      # TODO - populate firebase as part of deployment set
+      - run: |
+          yarn workflow deployment set $DEPLOYMENT_NAME
+          echo "export const firebaseConfig = {}" > src/environments/firebaseConfig.ts
+      - run: yarn build
