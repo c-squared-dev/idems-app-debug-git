@@ -1,6 +1,9 @@
 # Create a PR for new content branches
 # https://cli.github.com/manual/gh_pr_create
 
+############# SECRETS #############
+# DEPLOYMENT_PRIVATE_KEY - deployment private key used to decrypt deployment
+
 name: PR - Preview
 on:
   push:
@@ -9,8 +12,9 @@ on:
 env:
   # TODO - extract from config
   DEPLOYMENT_NAME: debug_git
+  DEPLOYMENT_PRIVATE_KEY: ${{secrets.DEPLOYMENT_PRIVATE_KEY}}
 jobs:
-  setup_app_repo:
+  deployment_build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -23,6 +27,9 @@ jobs:
         with:
           lfs: true
           path: ".idems_app/deployments/$DEPLOYMENT_NAME"
+      - name: Populate Encryption key
+        # TODO - make conditional
+        run: echo $DEPLOYMENT_PRIVATE_KEY > .idems_app/deployments/$DEPLOYMENT_NAME/encrypted/private.key
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -36,8 +43,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-modules-yarn-v1-
       - run: yarn install
-      # TODO - populate firebase as part of deployment set
       - run: |
-          yarn workflow deployment set $DEPLOYMENT_NAME
-          echo "export const firebaseConfig = {}" > src/environments/firebaseConfig.ts
-      - run: yarn build
+          echo $(ls)
+          echo $(ls .idems_app)
+          echo $(ls .idems_app/deployments)
+          echo $(ls .idems_app/deployments/$DEPLOYMENT_NAME)
+      # TODO - populate firebase as part of deployment set
+      # - name: set deployment
+      #   run: |
+      #     yarn workflow deployment set $DEPLOYMENT_NAME
+      #     echo "export const firebaseConfig = {}" > src/environments/firebaseConfig.ts
+      # - name: build
+      #   run: yarn build
