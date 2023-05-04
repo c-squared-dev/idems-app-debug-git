@@ -61,9 +61,8 @@ jobs:
         run: |
           yarn workflow deployment set $DEPLOYMENT_NAME
           echo "export const firebaseConfig = {\"apiKey\":\"\"}" > src/environments/firebaseConfig.ts
-      # Build the app. Instead of using `yarn build` command must manually specify so that additional build-flags can be passed
       - name: Build
-        run: yarn prepare && ng build --configuration=production ${{inputs.build-flags}}
+        run: yarn build ${{inputs.build-flags}}
         # Use github pages upload artifact action as also compresses into tar
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1.0.8
