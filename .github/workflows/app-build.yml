@@ -63,7 +63,6 @@ jobs:
         # https://github.com/actions/upload-pages-artifact/blob/main/action.yml
       - name: Compress Build Artifact
         run: |
-          ls
           chmod -c -R +rX "www/" | while read line; do
             echo "::warning title=Invalid file permissions automatically fixed::$line"
           done

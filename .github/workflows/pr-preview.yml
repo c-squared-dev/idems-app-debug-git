@@ -25,10 +25,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: pr-preview
-          path: artifact.tar
+      - name: debug logs
+        run: ls
       - name: Extract Build folder
         run: |
-          tar -xf artifact.tar
+          mkdir www
+          tar -xf artifact.tar --directory www
       # TODO - configure firebase as part of deployment and deploy www folder
       - name: deploy
         run: |

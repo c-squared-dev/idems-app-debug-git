@@ -1,6 +1,10 @@
 # Build and deploy main branch app to github pages
 # https://github.com/actions/deploy-pages
 
+# Setup
+# Ensure GitHub Pages has been enabled for actions in settings, example url:
+# https://github.com/{org}/{repo}/settings/pages
+
 name: Deploy - GH Pages
 on:
   push:
