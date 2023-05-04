@@ -123,7 +123,9 @@
       "name": "button_1",
       "value": "Next Page",
       "_translations": {
-        "value": {}
+        "value": {
+          "es_sp": true
+        }
       },
       "action_list": [
         {
