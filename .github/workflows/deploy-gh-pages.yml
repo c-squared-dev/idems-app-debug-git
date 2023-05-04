@@ -30,7 +30,7 @@ jobs:
         id: pages
         uses: actions/configure-pages@v3
       - name: Debug outputs
-        run: echo ${{steps.pages.outputs}}
+        run: echo ${{toJSON(steps.pages.outputs)}}
     outputs:
       base-href: ${{steps.pages.outputs.base_path}}
 
