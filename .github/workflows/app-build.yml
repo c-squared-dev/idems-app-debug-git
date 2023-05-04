@@ -56,18 +56,18 @@ jobs:
         run: yarn install
 
       # TODO - populate firebase as part of deployment set
-      - name: set deployment
+      - name: Set deployment
         run: |
           yarn workflow deployment set $DEPLOYMENT_NAME
-          echo "export const firebaseConfig = {}" > src/environments/firebaseConfig.ts
-      - name: build
+          echo "export const firebaseConfig = {\"apiKey\":\"\"}" > src/environments/firebaseConfig.ts
+      - name: Build
         run: yarn build
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.2
         if: ${{inputs.artifact-name}}
         with:
-          name: build
+          name: www
           # name: ${{ inputs.artifact-name }}
-          path: build/**
+          path: www/**
           if-no-files-found: error
 # https://colinsalmcorner.com/musings-on-reusable-workflows/
