@@ -1,5 +1,4 @@
-# Create a PR for new content branches
-# https://cli.github.com/manual/gh_pr_create
+# Create a reusable workflow to build deployment app
 
 ############# SECRETS #############
 # DEPLOYMENT_PRIVATE_KEY - (optional) deployment private key used to decrypt encrypted deployment
@@ -7,14 +6,7 @@
 name: App - Build
 on:
   workflow_call:
-    inputs:
-      artifact-name:
-        description: Name of the artifact to upload
-        type: string
-        default: build
-  push:
-    branches:
-      - content/*
+  # TODO - consider any secrets or inputs that should be passed
 env:
   # TODO - extract from config (would need to be done in separate action that first checks out)
   DEPLOYMENT_NAME: debug_git
@@ -64,10 +56,8 @@ jobs:
         run: yarn build
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.2
-        if: ${{inputs.artifact-name}}
         with:
           name: www
-          # name: ${{ inputs.artifact-name }}
           path: www/**
           if-no-files-found: error
 # https://colinsalmcorner.com/musings-on-reusable-workflows/

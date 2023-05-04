@@ -1,0 +1,21 @@
+# Create a PR for new content branches
+# https://cli.github.com/manual/gh_pr_create
+
+############# SECRETS #############
+# DEPLOYMENT_PRIVATE_KEY - (optional) deployment private key used to decrypt encrypted deployment
+
+name: PR - Preview
+on:
+  push:
+    branches:
+      - content/*
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+      - name: Build app
+        uses: .github/workflows/app-build.yml
+# https://colinsalmcorner.com/musings-on-reusable-workflows/
