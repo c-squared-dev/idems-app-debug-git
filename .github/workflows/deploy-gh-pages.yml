@@ -25,14 +25,14 @@ concurrency:
 jobs:
   configure:
     runs-on: ubuntu-latest
+    outputs:
+      base_path: ${{steps.pages.outputs.base_path}}
     steps:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
       - name: Debug outputs
         run: echo ${{toJSON(steps.pages.outputs)}}
-    outputs:
-      base-href: ${{steps.pages.outputs.base_path}}
 
   build_action:
     needs: configure
@@ -40,7 +40,7 @@ jobs:
     with:
       artifact-name: github-pages
       # build-flags: "--base-href ${{env.BASE_HREF}}"
-      build-flags: --base-href ${{needs.jobs.configure.outputs.base-href}}
+      build-flags: --base-href ${{needs.configure.outputs.base_path}}
 
   deploy_gh_pages:
     needs: build_action
