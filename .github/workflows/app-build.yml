@@ -59,11 +59,24 @@ jobs:
           echo "export const firebaseConfig = {\"apiKey\":\"\"}" > src/environments/firebaseConfig.ts
       - name: Build
         run: yarn build
+        # Tar build folder for faster download and to support format expected by github pages upload artifact action
+        # https://github.com/actions/upload-pages-artifact/blob/main/action.yml
+      - name: Compress Build Artifact
+        run: |
+          chmod -c -R +rX "www" | while read line; do
+            echo "::warning title=Invalid file permissions automatically fixed::$line"
+          done
+          tar \
+            --dereference --hard-dereference \
+            --directory "www" \
+            -cvf "$RUNNER_TEMP/artifact.tar" \
+            --exclude=.git \
+            --exclude=.github \
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.2
         with:
           name: ${{inputs.artifact-name}}
-          path: www/
+          path: ${{ runner.temp }}/artifact.tar
           if-no-files-found: error
           retention-days: 1
 # https://colinsalmcorner.com/musings-on-reusable-workflows/

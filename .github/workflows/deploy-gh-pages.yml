@@ -1,20 +1,16 @@
-# Create a PR for new content branches
-# https://cli.github.com/manual/gh_pr_create
-
-############# SECRETS #############
-# DEPLOYMENT_PRIVATE_KEY - (optional) deployment private key used to decrypt encrypted deployment
+# Build and deploy main branch app to github pages
+# https://github.com/actions/deploy-pages
 
 name: Deploy - GH Pages
 on:
   push:
     branches:
       - main
-      - content/*
 jobs:
   build:
     uses: ./.github/workflows/app-build.yml
     with:
-      artifact-name: actions/upload-pages-artifact
+      artifact-name: github-pages
   deploy:
     needs: build
     permissions:
