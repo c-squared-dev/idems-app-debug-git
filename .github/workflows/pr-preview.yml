@@ -17,6 +17,8 @@ jobs:
         with:
           lfs: true
           repository: "IDEMSInternational/parenting-app-ui.git"
+          # TODO - extract from config
+          ref: master
       - uses: actions/checkout@v3
         with:
           lfs: true
