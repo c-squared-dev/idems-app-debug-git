@@ -6,11 +6,17 @@
 
 name: App - Build
 on:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: Name of the artifact to upload
+        type: string
+        default: build
   push:
     branches:
       - content/*
 env:
-  # TODO - extract from config
+  # TODO - extract from config (would need to be done in separate action that first checks out)
   DEPLOYMENT_NAME: debug_git
   DEPLOYMENT_PRIVATE_KEY: ${{secrets.DEPLOYMENT_PRIVATE_KEY}}
 jobs:
@@ -54,5 +60,14 @@ jobs:
         run: |
           yarn workflow deployment set $DEPLOYMENT_NAME
           echo "export const firebaseConfig = {}" > src/environments/firebaseConfig.ts
-      # - name: build
-      #   run: yarn build
+      - name: build
+        run: yarn build
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.2.2
+        if: ${{inputs.artifact-name}}
+        with:
+          name: build
+          # name: ${{ inputs.artifact-name }}
+          path: build/**
+          if-no-files-found: error
+# https://colinsalmcorner.com/musings-on-reusable-workflows/
