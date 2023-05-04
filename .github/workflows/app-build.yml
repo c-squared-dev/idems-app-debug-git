@@ -73,6 +73,7 @@ jobs:
             -cvf "$RUNNER_TEMP/artifact.tar" \
             --exclude=.git \
             --exclude=.github \
+            .
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.2
         with:
