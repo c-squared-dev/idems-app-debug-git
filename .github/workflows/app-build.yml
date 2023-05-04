@@ -2,9 +2,9 @@
 # https://cli.github.com/manual/gh_pr_create
 
 ############# SECRETS #############
-# DEPLOYMENT_PRIVATE_KEY - deployment private key used to decrypt deployment
+# DEPLOYMENT_PRIVATE_KEY - (optional) deployment private key used to decrypt encrypted deployment
 
-name: PR - Preview
+name: App - Build
 on:
   push:
     branches:
@@ -14,7 +14,7 @@ env:
   DEPLOYMENT_NAME: debug_git
   DEPLOYMENT_PRIVATE_KEY: ${{secrets.DEPLOYMENT_PRIVATE_KEY}}
 jobs:
-  deployment_build:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -26,9 +26,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           lfs: true
-          path: ".idems_app/deployments/$DEPLOYMENT_NAME"
+          path: ".idems_app/deployments/${{env.DEPLOYMENT_NAME}}"
       - name: Populate Encryption key
-        if: env.DEPLOYMENT_PRIVATE_KEY
+        if: env.DEPLOYMENT_PRIVATE_KEY != ''
         run: echo $DEPLOYMENT_PRIVATE_KEY > .idems_app/deployments/$DEPLOYMENT_NAME/encrypted/private.key
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -42,12 +42,14 @@ jobs:
           key: ${{ runner.os }}-node-modules-yarn-v1-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-yarn-v1-
-      - run: yarn install
-      - run: |
+      - name: debug log
+        run: |
           echo $(ls)
-          echo $(ls .idems_app)
           echo $(ls .idems_app/deployments)
           echo $(ls .idems_app/deployments/$DEPLOYMENT_NAME)
+      # - name: Install node modules
+      #   run: yarn install
+
       # TODO - populate firebase as part of deployment set
       # - name: set deployment
       #   run: |
