@@ -29,14 +29,16 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
+    outputs:
+      base-href: ${{steps.pages.outputs.base_path}}
 
   build_action:
     needs: configure
     uses: ./.github/workflows/app-build.yml
     with:
       artifact-name: github-pages
-      build-flags: --base-href ${{env.BASE_HREF}}
-      # build-flags: --base-href ${{needs.jobs.configure.outputs.base_path}}
+      # build-flags: "--base-href ${{env.BASE_HREF}}"
+      build-flags: --base-href ${{needs.jobs.configure.outputs.base-href}}
 
   deploy_gh_pages:
     needs: build_action
