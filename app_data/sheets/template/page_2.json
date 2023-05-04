@@ -8,7 +8,9 @@
       "name": "title_1",
       "value": "Page 2",
       "_translations": {
-        "value": {}
+        "value": {
+          "es_sp": true
+        }
       },
       "_nested_name": "title_1"
     },
