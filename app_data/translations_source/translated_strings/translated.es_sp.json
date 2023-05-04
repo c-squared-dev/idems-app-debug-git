@@ -1,0 +1,17 @@
+[
+  {
+    "SourceText": "Debug Git Repo",
+    "text": "Depurar Git Repo",
+    "type": "template"
+  },
+  {
+    "SourceText": "Page 2",
+    "text": "Pagina 2",
+    "type": "template"
+  },
+  {
+    "SourceText": "Next Page",
+    "text": "Siguiente Página",
+    "type": "template"
+  }
+]

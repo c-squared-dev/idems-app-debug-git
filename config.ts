@@ -8,7 +8,7 @@ config.google_drive = {
 
 config.git = {
   content_repo: "https://github.com/c-squared-dev/idems-app-debug-git",
-  content_tag_latest: "1.1.7",
+  content_tag_latest: "1.1.8",
 };
 
 config.app_data.output_path = "./app_data";
