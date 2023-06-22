@@ -61,10 +61,11 @@ jobs:
       #     tar -xf artifact.tar --directory www
 
       # Create a basic firebase.json file to handle single-page-app hosting redirects
-
+      # https://www.baeldung.com/linux/jq-command-json
       - name: Populate Firebase JSON
         run: |
           mkdir www
+          touch firebase.json
           echo "<html lang="en"><body>Test</body></html>" > www/index.html
           FIREBASE_JSON_HOSTING=$(jq -n \
           --arg public "www" \
