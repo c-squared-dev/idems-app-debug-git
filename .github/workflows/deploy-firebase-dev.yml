@@ -64,14 +64,14 @@ jobs:
       - name: Populate Firebase Targets
         run: |
           FIREBASE_RC_TARGETS_APP=$(jq -n \
-            --argjson app '["${{secrets.FIREBASE_PROJECT_ID}}"]' \
+            --argjson app '{"hosting":["${{secrets.FIREBASE_PROJECT_ID}}"]}' \
             '$ARGS.named'
             )
 
           echo targets_app: $FIREBASE_RC_TARGETS_APP
 
           FIREBASE_RC_TARGETS=$(jq -n \
-            --argjson ${{secrets.FIREBASE_PROJECT_ID}} '{"hosting":$FIREBASE_RC_TARGETS_APP}' \
+            --arg ${{secrets.FIREBASE_PROJECT_ID}} $FIREBASE_RC_TARGETS_APP \
             '$ARGS.named'
             )
 
