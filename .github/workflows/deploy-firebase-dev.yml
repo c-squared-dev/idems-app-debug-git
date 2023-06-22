@@ -78,8 +78,8 @@ jobs:
           --arg hosting "[$FIREBASE_JSON_HOSTING]" \
           '$ARGS.named'
           )
-          echo $FIREBASE_JSON
-          echo $FIREBASE_JSON > firebase.json
+          echo $FIREBASE_JSON | jq '.'
+          echo $FIREBASE_JSON > firebase.json 
           echo $(cat firebase.json)
 
       # Deploy to firebase
