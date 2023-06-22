@@ -70,10 +70,7 @@ jobs:
         run: |
           FIREBASE_RC_TARGETS=$(jq -n \
             --argjson "${{env.FIREBASE_PROJECT_ID}}" \
-            '{"hosting":{ \
-              "app":["${{env.FIREBASE_PROJECT_ID}}"]}, \
-              "${{env.FIREBASE_HOSTING_TARGET}}":["${{env.FIREBASE_HOSTING_TARGET}}"] \
-             }}' \
+            '{"hosting":{"app":["${{env.FIREBASE_PROJECT_ID}}"]},"${{env.FIREBASE_HOSTING_TARGET}}":["${{env.FIREBASE_HOSTING_TARGET}}"]}' \
             '$ARGS.named'
             )
           FIREBASE_RC=$(jq -n \
