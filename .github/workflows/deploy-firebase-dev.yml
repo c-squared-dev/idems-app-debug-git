@@ -73,19 +73,19 @@ jobs:
 
           FIREBASE_JSON_HOSTING=$(jq -n \
           --arg public "www" \
-          --arg ignore '[${{env.IGNORE}}]' \
-          --arg rewrites '[${{env.REWRITES}}]' \
+          --argjson ignore '[${{env.IGNORE}}]' \
+          --argjson rewrites '[${{env.REWRITES}}]' \
           '$ARGS.named'
           )
 
           FIREBASE_JSON=$(jq -n \
-          --arg hosting "[$FIREBASE_JSON_HOSTING]" \
+          --argjson hosting "[$FIREBASE_JSON_HOSTING]" \
           '$ARGS.named'
           )
 
           echo $FIREBASE_JSON | jq '.'
           echo $FIREBASE_JSON | jq '.hosting'
-          echo $FIREBASE_JSON | jq '.hosting.[0]'
+          echo $FIREBASE_JSON | jq '.hosting[0]'
           echo $FIREBASE_JSON > firebase.json
 
           cat firebase.json
