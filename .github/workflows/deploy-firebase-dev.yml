@@ -61,6 +61,7 @@ jobs:
       #     tar -xf artifact.tar --directory www
 
       # Create a basic .firebaserc file mapping any firebase deployment host targets
+      # e.g. {"projects": {"default": "plh-teens-app1"},"targets": {"plh-teens-app1": {"hosting": {"app": ["plh-teens-app1"]} } }
       - name: Populate Firebase Targets
         run: |
           FIREBASE_RC_TARGETS_APP=$(jq -n \
@@ -71,7 +72,7 @@ jobs:
           echo targets_app: $FIREBASE_RC_TARGETS_APP
 
           FIREBASE_RC_TARGETS=$(jq -n \
-            --argjson ${{secrets.FIREBASE_PROJECT_ID}} $FIREBASE_RC_TARGETS_APP \
+            --argjson "${{secrets.FIREBASE_PROJECT_ID}}" "$FIREBASE_RC_TARGETS_APP" \
             '$ARGS.named'
             )
 
