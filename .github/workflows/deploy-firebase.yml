@@ -30,7 +30,6 @@ on:
   push:
     branches:
       - main
-      - ci/firebase-dev
 
 ##################################################################################
 #         Main Code
@@ -38,7 +37,7 @@ on:
 name: Deploy - Firebase
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 concurrency:
-  group: "firebase_dev"
+  group: "deploy_firebase"
   cancel-in-progress: true
 
 jobs:
@@ -67,7 +66,7 @@ jobs:
       # Ensure FIREBASE_HOSTING_TARGET set (default fallback to projectId)
       - name: Populate Env
         if: ${{env.FIREBASE_HOSTING_TARGET == ''}}
-        run: echo $FIREBASE_HOSTING_TARGET=${{env.FIREBASE_PROJECT_ID}} >> "$GITHUB_ENV"
+        run: echo "$FIREBASE_HOSTING_TARGET=${{env.FIREBASE_PROJECT_ID}}" >> "$GITHUB_ENV"
 
       # Create a .firebaserc file mapping any firebase deployment host targets (required if multi-host projects)
       # e.g. {"projects": {"default": "my_app"},"targets": {"my_app": {"hosting": {"my_app_dev":["my_app_dev"]} } }
