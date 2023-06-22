@@ -66,13 +66,14 @@ jobs:
       # https://jqplay.org/
 
       # jq '.hosting[0].target=${{env.FIREBASE_HOSTING_TARGET}}' > firebase.json
+
       - name: Populate Firebase JSON
         run: |
           mkdir www
           echo "<html lang="en"><body>Test</body></html>" > www/index.html
 
           FIREBASE_JSON_HOSTING=$(jq -n \
-          --arg target "app"
+          --arg target "app" \
           --arg public "www" \
           --argjson ignore '["firebase.json"]' \
           --argjson rewrites '[{"source": "**","destination": "/index.html"}]' \
