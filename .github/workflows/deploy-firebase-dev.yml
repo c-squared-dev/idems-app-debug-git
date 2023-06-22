@@ -72,7 +72,7 @@ jobs:
           --arg rewrites "[{"source": "**","destination": "/index.html" } ]" \
           )
           FIREBASE_JSON=$(jq -n \
-          --arg hosting "[$FIREBASE_JSON_HOSTING]") \
+          --arg hosting "[$FIREBASE_JSON_HOSTING]" \
           )
           echo $FIREBASE_JSON > firebase.json
           echo $(cat firebase.json | jq '.')
