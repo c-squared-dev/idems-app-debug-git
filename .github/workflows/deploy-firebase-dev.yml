@@ -69,23 +69,18 @@ jobs:
             '$ARGS.named'
             )
 
-          echo $FIREBASE_RC_TARGETS_APP | jq '.'
-
           FIREBASE_RC_TARGETS=$(jq -n \
             --argjson "${{secrets.FIREBASE_PROJECT_ID}}" "$FIREBASE_RC_TARGETS_APP" \
             '$ARGS.named'
             )
-
-          echo $FIREBASE_RC_TARGETS | jq '.'
 
           FIREBASE_RC=$(jq -n \
           --argjson projects '{"default":"${{secrets.FIREBASE_PROJECT_ID}}"}' \
           --argjson targets "$FIREBASE_RC_TARGETS" \
           '$ARGS.named'
           )
-
+          echo $FIREBASE_RC > .firebaserc | jq '.'
           echo $FIREBASE_RC > .firebaserc
-          cat .firebaserc
 
       # Create a basic firebase.json file to handle single-page-app hosting redirects
       # https://www.baeldung.com/linux/jq-command-json
@@ -108,9 +103,8 @@ jobs:
           --argjson hosting "[$FIREBASE_JSON_HOSTING]" \
           '$ARGS.named'
           )
-
+          echo $FIREBASE_JSON | jq '.'
           echo $FIREBASE_JSON > firebase.json
-          cat firebase.json
 
       # Deploy to firebase
       - id: deploy
