@@ -5,8 +5,12 @@
 # DEPLOYMENT_PRIVATE_KEY - (optional) deployment private key used to decrypt encrypted deployment
 
 ############# Configuration #############
-# 1. Specify name of deployment
+env:
+  # TODO - extract from config (would need to be done in separate action that first checks out)
+  DEPLOYMENT_NAME: debug_git
+  DEPLOYMENT_PRIVATE_KEY: ${{secrets.DEPLOYMENT_PRIVATE_KEY}}
 
+############# Triggers #############
 on:
   workflow_call:
     inputs:
@@ -19,10 +23,7 @@ on:
         type: string
         default: ""
   # TODO - may need to also pass secrets here if working with encrypted deployments (to test)
-env:
-  # TODO - extract from config (would need to be done in separate action that first checks out)
-  DEPLOYMENT_NAME: debug_git
-  DEPLOYMENT_PRIVATE_KEY: ${{secrets.DEPLOYMENT_PRIVATE_KEY}}
+############# Workflow #############
 jobs:
   build:
     runs-on: ubuntu-latest
