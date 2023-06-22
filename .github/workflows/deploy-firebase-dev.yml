@@ -69,18 +69,18 @@ jobs:
             '$ARGS.named'
             )
 
-          echo targets_app: $FIREBASE_RC_TARGETS_APP
+          echo targets_app: $FIREBASE_RC_TARGETS_APP | jq '.'
 
           FIREBASE_RC_TARGETS=$(jq -n \
             --argjson "${{secrets.FIREBASE_PROJECT_ID}}" "$FIREBASE_RC_TARGETS_APP" \
             '$ARGS.named'
             )
 
-          echo targets: $FIREBASE_RC_TARGETS
+          echo targets: $FIREBASE_RC_TARGETS | jq '.'
 
           FIREBASE_RC=$(jq -n \
           --argjson projects '{"default":"${{secrets.FIREBASE_PROJECT_ID}}"}' \
-          --argjson targets '$FIREBASE_RC_TARGETS' \
+          --argjson targets "$FIREBASE_RC_TARGETS" \
           '$ARGS.named'
           )
 
