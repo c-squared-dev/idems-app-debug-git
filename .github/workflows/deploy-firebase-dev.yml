@@ -22,14 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  configure:
-    runs-on: ubuntu-latest
-    outputs:
-      # Store base_path as output for use in build job (i.e. git repo name /my-repo )
-      base_path: ${{steps.deploy_dev.outputs.base_path}}
-
   build_action:
-    needs: configure
     uses: ./.github/workflows/app-build.yml
     with:
       artifact-name: www
@@ -51,7 +44,7 @@ jobs:
 
       - name: Populate Firebase JSON
         run: |
-          FIREBASE_JSON='{"target": "app","public": "www", "ignore": ["firebase.json"], "rewrites": [{"source": "**","destination": "/index.html" } ]}'
+          FIREBASE_JSON='{"public": "www", "ignore": ["firebase.json"], "rewrites": [{"source": "**","destination": "/index.html" } ]}'
           echo FIREBASE_JSON > firebase.json
           cat FIREBASE_JSON
       # - uses: FirebaseExtended/action-hosting-deploy@v0
