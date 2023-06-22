@@ -61,13 +61,21 @@ jobs:
       #     tar -xf artifact.tar --directory www
 
       # Create a basic firebase.json file to handle single-page-app hosting redirects
+
       - name: Populate Firebase JSON
         run: |
           mkdir www
           echo "<html lang="en"><body>Test</body></html>" > www/index.html
-          FIREBASE_JSON='{"hosting:": [{"public": "www", "ignore": ["firebase.json"], "rewrites": [{"source": "**","destination": "/index.html" } ]}]}'
+          FIREBASE_JSON_HOSTING=$(jq -n \
+          --arg public "www" \
+          --arg ignore "[firebase.json]" \
+          --arg rewrites "[{"source": "**","destination": "/index.html" } ]" \
+          )
+          FIREBASE_JSON=$(jq -n \
+          --arg hosting "[$FIREBASE_JSON_HOSTING]") \
+          )
           echo $FIREBASE_JSON > firebase.json
-          echo $(cat firebase.json)
+          echo $(cat firebase.json | jq '.')
 
       # Deploy to firebase
       - id: deploy
