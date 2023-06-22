@@ -4,6 +4,9 @@
 ############# SECRETS #############
 # DEPLOYMENT_PRIVATE_KEY - (optional) deployment private key used to decrypt encrypted deployment
 
+############# Configuration #############
+# 1. Specify name of deployment
+
 on:
   workflow_call:
     inputs:

@@ -30,6 +30,8 @@ jobs:
   deploy_dev:
     needs: build_action
     runs-on: ubuntu-latest
+    outputs:
+      urls: ${{ steps.deploy.outputs.urls }}
     steps:
       - uses: actions/checkout@v3
       - name: Download Build Artifact
@@ -47,13 +49,11 @@ jobs:
           FIREBASE_JSON='{"public": "www", "ignore": ["firebase.json"], "rewrites": [{"source": "**","destination": "/index.html" } ]}'
           echo FIREBASE_JSON > firebase.json
           cat FIREBASE_JSON
-      # - uses: FirebaseExtended/action-hosting-deploy@v0
-      #   with:
-      #     repoToken: "${{ secrets.GITHUB_TOKEN }}"
-      #     firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
-      #     projectId: "${{ secrets.GITHUB_TOKEN }}"
-      #     channelId: "${{ secrets.FIREBASE_PROJECT_ID_DEV }}"
-
-      # - run: echo "test=hello" >> "$GITHUB_OUTPUT"
-
+      - id: deploy
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          projectId: "${{ secrets.GITHUB_TOKEN }}"
+          channelId: "${{ secrets.FIREBASE_PROJECT_ID_DEV }}"
 #  firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
