@@ -60,18 +60,15 @@ jobs:
       #     mkdir www
       #     tar -xf artifact.tar --directory www
 
-      # Create a basic firebase.json file to handle single-page-app hosting redirects
-      # https://www.baeldung.com/linux/jq-command-json
-      # https://jqlang.github.io/jq/manual/
-      # https://jqplay.org/
-
-      # jq '.hosting[0].target=${{env.FIREBASE_HOSTING_TARGET}}' > firebase.json
+      # Create a basic .firebaserc file mapping any firebase deployment host targets
       - name: Populate Firebase Targets
         run: |
           FIREBASE_RC_TARGETS=$(jq -n \
-            --argjson ${{secrets.FIREBASE_PROJECT_ID}} "{"hosting":{"app":[${{secrets.FIREBASE_PROJECT_ID}}]}}" \
+            --argjson ${{secrets.FIREBASE_PROJECT_ID}} "{"hosting":{"app":["${{secrets.FIREBASE_PROJECT_ID}}"]}}" \
             '$ARGS.named'
             )
+
+          echo targets: $FIREBASE_RC_TARGETS
 
           FIREBASE_RC=$(jq -n \
           --argjson projects '{"default":${{secrets.FIREBASE_PROJECT_ID}}}' \
@@ -82,6 +79,10 @@ jobs:
           echo $FIREBASE_RC > .firebaserc
           cat .firebaserc
 
+      # Create a basic firebase.json file to handle single-page-app hosting redirects
+      # https://www.baeldung.com/linux/jq-command-json
+      # https://jqlang.github.io/jq/manual/
+      # https://jqplay.org/
       - name: Populate Firebase JSON
         run: |
           mkdir www
