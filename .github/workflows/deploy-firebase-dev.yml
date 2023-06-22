@@ -1,13 +1,24 @@
 # Build and deploy app to firebase
 # Deploys to "dev" site on "main" branch
 
-# Github Secrets
+##################################################################################
+#         Github Secrets (configured per deployment)
+##################################################################################
+# These should be configured in https://github.com/{org}/{repo}/settings/secrets/actions
 
-# FIREBASE_PROJECT_ID_DEV -
-# FIREBASE_SERVICE_ACCOUNT
+# | FIREBASE_PROJECT_ID         | ID of firebase project to use
+# | FIREBASE_SERVICE_ACCOUNT    | JSON export of service account (exported from firebase console)
 
-# Known Issues
-# ...
+##################################################################################
+#         Configuration (updated per deployment)
+##################################################################################
+
+env:
+  FIREBASE_HOSTING_CHANNEL: dev # | Name of preview channel to deploy to
+
+##################################################################################
+#         Main Code
+##################################################################################
 
 name: Deploy - Firebase
 on:
@@ -47,14 +58,14 @@ jobs:
       - name: Populate Firebase JSON
         run: |
           FIREBASE_JSON='{"public": "www", "ignore": ["firebase.json"], "rewrites": [{"source": "**","destination": "/index.html" } ]}'
-          echo FIREBASE_JSON > firebase.json
+          echo $FIREBASE_JSON > firebase.json
           cat firebase.json
       - id: deploy
-        run: echo "urls=https://example.com" >> "$GITHUB_OUTPUT"
-        # uses: FirebaseExtended/action-hosting-deploy@v0
-        # with:
-        #   repoToken: "${{ secrets.GITHUB_TOKEN }}"
-        #   firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
-        #   projectId: "${{ secrets.GITHUB_TOKEN }}"
-        #   channelId: "${{ secrets.FIREBASE_PROJECT_ID_DEV }}"
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          projectId: "${{ secrets.GITHUB_TOKEN }}"
+          channelId: "${{ secrets.FIREBASE_HOSTING_CHANNEL }}"
+          expires: "30d"
 #  firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
