@@ -62,6 +62,7 @@ jobs:
 
       # Create a basic firebase.json file to handle single-page-app hosting redirects
       # https://www.baeldung.com/linux/jq-command-json
+      # https://jqlang.github.io/jq/manual/
       - name: Populate Firebase JSON
         run: |
           mkdir www
@@ -75,8 +76,10 @@ jobs:
           FIREBASE_JSON=$(jq -n \
           --arg hosting "[$FIREBASE_JSON_HOSTING]" \
           )
-          echo $FIREBASE_JSON | jq -r '.' firebase.json
-          echo $(cat firebase.json | jq '.')
+          echo $FIREBASE_JSON
+          echo $FIREBASE_JSON | jq
+          echo $FIREBASE_JSON | jq '.' > firebase.json
+          echo $(cat firebase.json)
 
       # Deploy to firebase
       - id: deploy
