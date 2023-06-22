@@ -18,8 +18,8 @@
 
 env:
   FIREBASE_PROJECT_ID: idems-app-debug # | ID of firebase project used (in case of multiple deployment targets just specify default)
-  FIREBASE_HOSTING_CHANNEL: dev # | Name of preview channel to deploy to (use 'live' for permanent site or '' for random pr url)
-  FIREBASE_HOSTING_TARGET: "" # | Optional override if using multiple hosting target sites
+  FIREBASE_HOSTING_CHANNEL: live # | Name of channel to deploy to (default 'live' is main site, any other word, e.g. 'pr' will create temp preview site)
+  FIREBASE_HOSTING_TARGET: "" # | Optional override if using multiple hosting target sites (default target project ID)
 
 ##################################################################################
 #         Main Code
@@ -38,42 +38,36 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # build_action:
-  #   uses: ./.github/workflows/app-build.yml
-  #   with:
-  #     artifact-name: www
+  build_action:
+    uses: ./.github/workflows/app-build.yml
+    with:
+      artifact-name: www
 
   deploy_dev:
-    # needs: build_action
+    needs: build_action
     runs-on: ubuntu-latest
     outputs:
       urls: ${{ steps.deploy.outputs.urls }}
     steps:
       # Extract build artifact
       - uses: actions/checkout@v3
-      # - name: Download Build Artifact
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: www
-      # - name: Extract Build folder
-      #   run: |
-      #     mkdir www
-      #     tar -xf artifact.tar --directory www
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: www
+      - name: Extract Build folder
+        run: |
+          mkdir www
+          tar -xf artifact.tar --directory www
 
-      # Create a basic .firebaserc file mapping any firebase deployment host targets
+      # Create a .firebaserc file mapping any firebase deployment host targets
       # e.g. {"projects": {"default": "plh-teens-app1"},"targets": {"plh-teens-app1": {"hosting": {"app": ["plh-teens-app1"]} } }
       - name: Populate Firebase Targets
         run: |
-          FIREBASE_RC_TARGETS_APP=$(jq -n \
-            --argjson hosting '{"app":["${{env.FIREBASE_PROJECT_ID}}"]}' \
-            '$ARGS.named'
-            )
-
           FIREBASE_RC_TARGETS=$(jq -n \
             --argjson "${{env.FIREBASE_PROJECT_ID}}" '{"hosting":{"app":["${{env.FIREBASE_PROJECT_ID}}"]}}' \
             '$ARGS.named'
             )
-
           FIREBASE_RC=$(jq -n \
           --argjson projects '{"default":"${{env.FIREBASE_PROJECT_ID}}"}' \
           --argjson targets "$FIREBASE_RC_TARGETS" \
@@ -82,15 +76,10 @@ jobs:
           echo $FIREBASE_RC | jq '.'
           echo $FIREBASE_RC > .firebaserc
 
-      # Create a basic firebase.json file to handle single-page-app hosting redirects
-      # https://www.baeldung.com/linux/jq-command-json
-      # https://jqlang.github.io/jq/manual/
-      # https://jqplay.org/
+      # Create a firebase.json file to handle single-page-app hosting redirects
+      # e.g. {"hosting": [{"target": "app","public": "www","ignore": ["firebase.json"], "rewrites": [{"source": "**","destination": "/index.html"}] }]}
       - name: Populate Firebase JSON
         run: |
-          mkdir www
-          echo "<html lang="en"><body>Test</body></html>" > www/index.html
-
           FIREBASE_JSON_HOSTING=$(jq -n \
           --arg target "app" \
           --arg public "www" \
@@ -98,7 +87,6 @@ jobs:
           --argjson rewrites '[{"source": "**","destination": "/index.html"}]' \
           '$ARGS.named'
           )
-
           FIREBASE_JSON=$(jq -n \
           --argjson hosting "[$FIREBASE_JSON_HOSTING]" \
           '$ARGS.named'
@@ -116,4 +104,11 @@ jobs:
           channelId: "${{ env.FIREBASE_HOSTING_CHANNEL }}"
           target: "${{ env.FIREBASE_HOSTING_TARGET }}"
           expires: "30d"
+##################################################################################
+#         Useful Links
+##################################################################################
+# https://www.baeldung.com/linux/jq-command-json
+# https://jqlang.github.io/jq/manual/
+# https://jqplay.org/
+
 # echo $FIREBASE_JSON | jq '.hosting[0]'
