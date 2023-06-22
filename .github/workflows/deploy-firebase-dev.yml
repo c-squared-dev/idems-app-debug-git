@@ -72,13 +72,14 @@ jobs:
           --arg public "www" \
           --arg ignore "[firebase.json]" \
           --arg rewrites "[{"source": "**","destination": "/index.html" } ]" \
+          '$ARGS.named'
           )
           FIREBASE_JSON=$(jq -n \
           --arg hosting "[$FIREBASE_JSON_HOSTING]" \
+          '$ARGS.named'
           )
           echo $FIREBASE_JSON
-          echo $FIREBASE_JSON | jq
-          echo $FIREBASE_JSON | jq '.' > firebase.json
+          echo $FIREBASE_JSON > firebase.json
           echo $(cat firebase.json)
 
       # Deploy to firebase
