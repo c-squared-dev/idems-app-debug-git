@@ -1,5 +1,9 @@
+##################################################################################
+#         About
+##################################################################################
 # Build and deploy app to firebase
-# Deploys to "dev" site on "main" branch
+# It supports deploying to custom hosting channel for long-lived preview urls (30d)
+# Or using custom hosting target
 
 ##################################################################################
 #         Github Secrets (configured per deployment)
@@ -14,7 +18,8 @@
 ##################################################################################
 
 env:
-  FIREBASE_HOSTING_CHANNEL: dev # | Name of preview channel to deploy to
+  FIREBASE_HOSTING_CHANNEL: dev # | Name of preview channel to deploy to (use 'live' for permanent site or '' for random pr url)
+  FIREBASE_HOSTING_TARGET: "" # | Optional override if using multiple hosting target sites
 
 ##################################################################################
 #         Main Code
@@ -55,17 +60,19 @@ jobs:
           mkdir www
           tar -xf artifact.tar --directory www
 
+      # Create a basic firebase.json file to handle single-page-app hosting redirects
       - name: Populate Firebase JSON
         run: |
           FIREBASE_JSON='{"public": "www", "ignore": ["firebase.json"], "rewrites": [{"source": "**","destination": "/index.html" } ]}'
           echo $FIREBASE_JSON > firebase.json
-          cat firebase.json
+          echo $(cat firebase.json)
       - id: deploy
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
-          projectId: "${{ secrets.GITHUB_TOKEN }}"
-          channelId: "${{ secrets.FIREBASE_HOSTING_CHANNEL }}"
+          projectId: "${{ secrets.FIREBASE_PROJECT_ID }}"
+          channelId: "${{ env.FIREBASE_HOSTING_CHANNEL }}"
+          target: "${{ env.FIREBASE_HOSTING_TARGET }}"
           expires: "30d"
 #  firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
