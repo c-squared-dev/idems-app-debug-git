@@ -68,10 +68,15 @@ jobs:
           mkdir www
           touch firebase.json
           echo "<html lang="en"><body>Test</body></html>" > www/index.html
+          FIREBASE_JSON_REWRITES = $(jq -n \
+          --arg source "**" \
+          --arg destination "/index.html" \
+          '$ARGS.named'
+          )
           FIREBASE_JSON_HOSTING=$(jq -n \
           --arg public "www" \
-          --arg ignore "[firebase.json]" \
-          --arg rewrites "[{"source": "**","destination": "/index.html" } ]" \
+          --arg ignore "[]" \
+          --arg rewrites "[$FIREBASE_JSON_REWRITES]" \
           '$ARGS.named'
           )
           FIREBASE_JSON=$(jq -n \
