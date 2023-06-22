@@ -73,8 +73,8 @@ jobs:
 
           FIREBASE_JSON_HOSTING=$(jq -n \
           --arg public "www" \
-          --arg ignore "[]" \
-          --arg rewrites "[$env.REWRITES]" \
+          --arg ignore "[${{env.IGNORE}}]" \
+          --arg rewrites "[${{env.REWRITES}}]" \
           '$ARGS.named'
           )
 
@@ -83,13 +83,16 @@ jobs:
           '$ARGS.named'
           )
 
-          echo $FIREBASE_JSON
+          echo $FIREBASE_JSON | jq '.'
+          echo $FIREBASE_JSON | jq '.hosting'
+          echo $FIREBASE_JSON | jq '.hosting[0]'
           echo $FIREBASE_JSON > firebase.json
 
           cat firebase.json
 
         env:
           REWRITES: '{"source": "**","destination": "/index.html"}'
+          IGNORE: "firebase.json"
 
       # Deploy to firebase
       - id: deploy
