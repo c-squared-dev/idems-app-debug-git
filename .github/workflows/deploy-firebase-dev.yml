@@ -63,29 +63,16 @@ jobs:
       # Create a basic firebase.json file to handle single-page-app hosting redirects
       # https://www.baeldung.com/linux/jq-command-json
       # https://jqlang.github.io/jq/manual/
+      # https://jqplay.org/
       - name: Populate Firebase JSON
         run: |
           mkdir www
           touch firebase.json
           echo "<html lang="en"><body>Test</body></html>" > www/index.html
-          FIREBASE_JSON_REWRITES = $(jq -n \
-          --arg source "**" \
-          --arg destination "/index.html" \
-          '$ARGS.named'
-          )
-          FIREBASE_JSON_HOSTING=$(jq -n \
-          --arg public "www" \
-          --arg ignore "[]" \
-          --arg rewrites "[$FIREBASE_JSON_REWRITES]" \
-          '$ARGS.named'
-          )
-          FIREBASE_JSON=$(jq -n \
-          --arg hosting "[$FIREBASE_JSON_HOSTING]" \
-          '$ARGS.named'
-          )
-          echo $FIREBASE_JSON | jq '.'
-          echo $FIREBASE_JSON > firebase.json 
-          echo $(cat firebase.json)
+          echo ${{env.FIREBASE_JSON}} | jq '.'
+
+        env:
+          FIREBASE_JSON: '{"hosting":[{"target":"", "public":"www", "rewrites":[{"source":"**", "destination":"/index.html"]}]}'
 
       # Deploy to firebase
       - id: deploy
@@ -97,3 +84,18 @@ jobs:
           channelId: "${{ env.FIREBASE_HOSTING_CHANNEL }}"
           target: "${{ env.FIREBASE_HOSTING_TARGET }}"
           expires: "30d"
+# FIREBASE_JSON_REWRITES = $(jq -n \
+#           --arg source "**" \
+#           --arg destination "/index.html" \
+#           '$ARGS.named'
+#           )
+#           FIREBASE_JSON_HOSTING=$(jq -n \
+#           --arg public "www" \
+#           --arg ignore "[]" \
+#           --arg rewrites "[$FIREBASE_JSON_REWRITES]" \
+#           '$ARGS.named'
+#           )
+#           FIREBASE_JSON=$(jq -n \
+#           --arg hosting "[$FIREBASE_JSON_HOSTING]" \
+#           '$ARGS.named'
+#           )
