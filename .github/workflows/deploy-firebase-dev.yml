@@ -72,7 +72,9 @@ jobs:
           echo "<html lang="en"><body>Test</body></html>" > www/index.html
           echo ${{env.FIREBASE_JSON}} > firebase.json
           TEMP_1 = $(jq '.' firebase.json)
+          TEMP_2 = $(jq --arg hosting[0] "test"' firebase.json)
           echo $TEMP_1
+          echo $TEMP_2
           echo ${{env.FIREBASE_JSON}} | jq '.'
           echo ${{env.FIREBASE_JSON}} | jq '.hosting'
           echo ${{env.FIREBASE_JSON}} | jq '.hosting[0]'
