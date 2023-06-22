@@ -74,7 +74,7 @@ jobs:
       - name: Populate Firebase Targets
         run: |
           FIREBASE_RC_TARGETS=$(jq -n \
-            --argjson "${{env.FIREBASE_PROJECT_ID}}" 
+            --argjson "${{env.FIREBASE_PROJECT_ID}}" \
             '{"hosting":{"${{env.FIREBASE_HOSTING_TARGET}}":["${{env.FIREBASE_HOSTING_TARGET}}"]}}' \
             '$ARGS.named'
             )
