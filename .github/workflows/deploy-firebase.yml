@@ -64,13 +64,17 @@ jobs:
           mkdir www
           tar -xf artifact.tar --directory www
 
+      - name: Populate Env
+        if: ${{env.FIREBASE_HOSTING_TARGET == ''}}
+        run: echo $FIREBASE_HOSTING_TARGET=${{env.FIREBASE_PROJECT_ID}} >> "$GITHUB_ENV"
+
       # Create a .firebaserc file mapping any firebase deployment host targets
-      # e.g. {"projects": {"default": "plh-teens-app1"},"targets": {"plh-teens-app1": {"hosting": {"app": ["plh-teens-app1"],"app_dev":["app_dev"]} } }
+      # e.g. {"projects": {"default": "plh-teens-app1"},"targets": {"my_app": {"hosting": {"my_app_dev":["my_app_dev"]} } }
       - name: Populate Firebase Targets
         run: |
           FIREBASE_RC_TARGETS=$(jq -n \
             --argjson "${{env.FIREBASE_PROJECT_ID}}" \
-            '{"hosting":{"app":["${{env.FIREBASE_PROJECT_ID}}"]},"${{env.FIREBASE_HOSTING_TARGET}}":["${{env.FIREBASE_HOSTING_TARGET}}"]}' \
+            '{"hosting":{"${{env.FIREBASE_HOSTING_TARGET}}":["${{env.FIREBASE_HOSTING_TARGET}}"]}' \
             '$ARGS.named'
             )
           FIREBASE_RC=$(jq -n \
@@ -86,7 +90,7 @@ jobs:
       - name: Populate Firebase JSON
         run: |
           FIREBASE_JSON_HOSTING=$(jq -n \
-          --arg target "app" \
+          --arg target "${{ env.FIREBASE_HOSTING_TARGET }}" \
           --arg public "www" \
           --argjson ignore '["firebase.json"]' \
           --argjson rewrites '[{"source": "**","destination": "/index.html"}]' \
