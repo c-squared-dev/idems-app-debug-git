@@ -2,7 +2,7 @@
 #         About
 ##################################################################################
 # Build and deploy app to firebase
-# It supports deploying to custom hosting channel for long-lived preview urls (30d)
+# Supports deploying to custom hosting channel for long-lived preview urls (30d)
 # Or using custom hosting target
 
 ##################################################################################
@@ -64,17 +64,18 @@ jobs:
           mkdir www
           tar -xf artifact.tar --directory www
 
+      # Ensure FIREBASE_HOSTING_TARGET set (default fallback to projectId)
       - name: Populate Env
         if: ${{env.FIREBASE_HOSTING_TARGET == ''}}
         run: echo $FIREBASE_HOSTING_TARGET=${{env.FIREBASE_PROJECT_ID}} >> "$GITHUB_ENV"
 
-      # Create a .firebaserc file mapping any firebase deployment host targets
+      # Create a .firebaserc file mapping any firebase deployment host targets (required if multi-host projects)
       # e.g. {"projects": {"default": "plh-teens-app1"},"targets": {"my_app": {"hosting": {"my_app_dev":["my_app_dev"]} } }
       - name: Populate Firebase Targets
         run: |
           FIREBASE_RC_TARGETS=$(jq -n \
-            --argjson "${{env.FIREBASE_PROJECT_ID}}" \
-            '{"hosting":{"${{env.FIREBASE_HOSTING_TARGET}}":["${{env.FIREBASE_HOSTING_TARGET}}"]}' \
+            --argjson "${{env.FIREBASE_PROJECT_ID}}" 
+            '{"hosting":{"${{env.FIREBASE_HOSTING_TARGET}}":["${{env.FIREBASE_HOSTING_TARGET}}"]}}' \
             '$ARGS.named'
             )
           FIREBASE_RC=$(jq -n \
@@ -116,6 +117,9 @@ jobs:
 ##################################################################################
 #         Useful Links
 ##################################################################################
+# https://firebase.google.com/docs/hosting/full-config
+# https://firebase.google.com/docs/cli/targets
+
 # https://www.baeldung.com/linux/jq-command-json
 # https://jqlang.github.io/jq/manual/
 # https://jqplay.org/
