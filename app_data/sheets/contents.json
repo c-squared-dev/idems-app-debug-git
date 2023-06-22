@@ -1,5 +1,7 @@
 {
   "data_list": {},
+  "data_pipe": {},
+  "generator": {},
   "global": {},
   "template": {
     "debug_sheet": {
@@ -25,6 +27,5 @@
       "_xlsxPath": "duplicate_sheet_1.xlsx"
     }
   },
-  "tour": {},
-  "data_pipe": {}
+  "tour": {}
 }
