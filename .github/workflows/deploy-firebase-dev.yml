@@ -79,7 +79,7 @@ jobs:
           --argjson targets "$FIREBASE_RC_TARGETS" \
           '$ARGS.named'
           )
-          echo $FIREBASE_RC > .firebaserc | jq '.'
+          echo $FIREBASE_RC | jq '.'
           echo $FIREBASE_RC > .firebaserc
 
       # Create a basic firebase.json file to handle single-page-app hosting redirects
