@@ -66,6 +66,21 @@ jobs:
       # https://jqplay.org/
 
       # jq '.hosting[0].target=${{env.FIREBASE_HOSTING_TARGET}}' > firebase.json
+      - name: Populate Firebase Targets
+        run: |
+          FIREBASE_RC_TARGETS=$(jq -n \
+            --argjson ${{secrets.FIREBASE_PROJECT_ID}} "{"hosting":{"app":[${{secrets.FIREBASE_PROJECT_ID}}]}}" \
+            '$ARGS.named'
+            )
+
+          FIREBASE_RC=$(jq -n \
+          --argjson projects '{"default":${{secrets.FIREBASE_PROJECT_ID}}}' \
+          --argjson targets '$FIREBASE_RC_TARGETS' \
+          '$ARGS.named'
+          )
+
+          echo $FIREBASE_RC > .firebaserc
+          cat .firebaserc
 
       - name: Populate Firebase JSON
         run: |
@@ -85,11 +100,7 @@ jobs:
           '$ARGS.named'
           )
 
-          echo $FIREBASE_JSON | jq '.'
-          echo $FIREBASE_JSON | jq '.hosting'
-          echo $FIREBASE_JSON | jq '.hosting[0]'
           echo $FIREBASE_JSON > firebase.json
-
           cat firebase.json
 
       # Deploy to firebase
@@ -102,18 +113,4 @@ jobs:
           channelId: "${{ env.FIREBASE_HOSTING_CHANNEL }}"
           target: "${{ env.FIREBASE_HOSTING_TARGET }}"
           expires: "30d"
-# FIREBASE_JSON_REWRITES = $(jq -n \
-#           --arg source "**" \
-#           --arg destination "/index.html" \
-#           '$ARGS.named'
-#           )
-#           FIREBASE_JSON_HOSTING=$(jq -n \
-#           --arg public "www" \
-#           --arg ignore "[]" \
-#           --arg rewrites "[$FIREBASE_JSON_REWRITES]" \
-#           '$ARGS.named'
-#           )
-#           FIREBASE_JSON=$(jq -n \
-#           --arg hosting "[$FIREBASE_JSON_HOSTING]" \
-#           '$ARGS.named'
-#           )
+# echo $FIREBASE_JSON | jq '.hosting[0]'
