@@ -72,6 +72,7 @@ jobs:
           echo "<html lang="en"><body>Test</body></html>" > www/index.html
 
           FIREBASE_JSON_HOSTING=$(jq -n \
+          --arg target "app"
           --arg public "www" \
           --argjson ignore '["firebase.json"]' \
           --argjson rewrites '[{"source": "**","destination": "/index.html"}]' \
@@ -89,10 +90,6 @@ jobs:
           echo $FIREBASE_JSON > firebase.json
 
           cat firebase.json
-
-        env:
-          REWRITES: '{"source": "**","destination": "/index.html"}'
-          IGNORE: "firebase.json"
 
       # Deploy to firebase
       - id: deploy
