@@ -64,18 +64,23 @@ jobs:
       # https://www.baeldung.com/linux/jq-command-json
       # https://jqlang.github.io/jq/manual/
       # https://jqplay.org/
+
+      # jq '.hosting[0].target=${{env.FIREBASE_HOSTING_TARGET}}' > firebase.json
       - name: Populate Firebase JSON
         run: |
           mkdir www
-          touch firebase.json
           echo "<html lang="en"><body>Test</body></html>" > www/index.html
+          echo ${{env.FIREBASE_JSON}} > firebase.json
+          TEMP_1 = $(jq '.' firebase.json)
+          echo $TEMP_1
           echo ${{env.FIREBASE_JSON}} | jq '.'
           echo ${{env.FIREBASE_JSON}} | jq '.hosting'
           echo ${{env.FIREBASE_JSON}} | jq '.hosting[0]'
-          echo ${{env.FIREBASE_JSON}} | jq '.hosting[0].rewrites'
+
+          cat firebase.json
 
         env:
-          FIREBASE_JSON: '{"hosting":[{"target":"", "public":"www", "rewrites":[{"source":"**", "destination":"/index.html"}]}]}'
+          FIREBASE_JSON: '{"hosting":[]}'
 
       # Deploy to firebase
       - id: deploy
