@@ -73,8 +73,8 @@ jobs:
 
           FIREBASE_JSON_HOSTING=$(jq -n \
           --arg public "www" \
-          --argjson ignore '[${{env.IGNORE}}]' \
-          --argjson rewrites '[${{env.REWRITES}}]' \
+          --argjson ignore '["firebase.json"]' \
+          --argjson rewrites '[{"source": "**","destination": "/index.html"}]' \
           '$ARGS.named'
           )
 
