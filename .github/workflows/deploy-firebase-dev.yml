@@ -1,0 +1,66 @@
+# Build and deploy app to firebase
+# Deploys to "dev" site on "main" branch
+
+# Github Secrets
+
+# FIREBASE_PROJECT_ID_DEV -
+# FIREBASE_SERVICE_ACCOUNT
+
+# Known Issues
+# ...
+
+name: Deploy - Firebase
+on:
+  push:
+    branches:
+      - main
+      - ci/firebase-dev
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+concurrency:
+  group: "firebase_dev"
+  cancel-in-progress: true
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    outputs:
+      # Store base_path as output for use in build job (i.e. git repo name /my-repo )
+      base_path: ${{steps.deploy_dev.outputs.base_path}}
+
+  build_action:
+    needs: configure
+    uses: ./.github/workflows/app-build.yml
+    with:
+      artifact-name: www
+
+  deploy_dev:
+    needs: build_action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: www
+
+      - name: Extract Build folder
+        run: |
+          mkdir www
+          tar -xf artifact.tar --directory www
+
+      - name: Populate Firebase JSON
+        run: |
+          FIREBASE_JSON='{"target": "app","public": "www", "ignore": ["firebase.json"], "rewrites": [{"source": "**","destination": "/index.html" } ]}'
+          echo FIREBASE_JSON > firebase.json
+          cat FIREBASE_JSON
+      # - uses: FirebaseExtended/action-hosting-deploy@v0
+      #   with:
+      #     repoToken: "${{ secrets.GITHUB_TOKEN }}"
+      #     firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+      #     projectId: "${{ secrets.GITHUB_TOKEN }}"
+      #     channelId: "${{ secrets.FIREBASE_PROJECT_ID_DEV }}"
+
+      # - run: echo "test=hello" >> "$GITHUB_OUTPUT"
+
+#  firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
