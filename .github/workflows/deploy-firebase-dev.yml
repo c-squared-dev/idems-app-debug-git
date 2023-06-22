@@ -38,34 +38,38 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build_action:
-    uses: ./.github/workflows/app-build.yml
-    with:
-      artifact-name: www
+  # build_action:
+  #   uses: ./.github/workflows/app-build.yml
+  #   with:
+  #     artifact-name: www
 
   deploy_dev:
-    needs: build_action
+    # needs: build_action
     runs-on: ubuntu-latest
     outputs:
       urls: ${{ steps.deploy.outputs.urls }}
     steps:
+      # Extract build artifact
       - uses: actions/checkout@v3
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: www
-
-      - name: Extract Build folder
-        run: |
-          mkdir www
-          tar -xf artifact.tar --directory www
+      # - name: Download Build Artifact
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: www
+      # - name: Extract Build folder
+      #   run: |
+      #     mkdir www
+      #     tar -xf artifact.tar --directory www
 
       # Create a basic firebase.json file to handle single-page-app hosting redirects
       - name: Populate Firebase JSON
         run: |
-          FIREBASE_JSON='{"public": "www", "ignore": ["firebase.json"], "rewrites": [{"source": "**","destination": "/index.html" } ]}'
+          mkdir www
+          echo "<html lang="en"><body>Test</body></html>" > www/index.html
+          FIREBASE_JSON='{"hosting:": [{"public": "www", "ignore": ["firebase.json"], "rewrites": [{"source": "**","destination": "/index.html" } ]}]}'
           echo $FIREBASE_JSON > firebase.json
           echo $(cat firebase.json)
+
+      # Deploy to firebase
       - id: deploy
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -75,4 +79,3 @@ jobs:
           channelId: "${{ env.FIREBASE_HOSTING_CHANNEL }}"
           target: "${{ env.FIREBASE_HOSTING_TARGET }}"
           expires: "30d"
-#  firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
