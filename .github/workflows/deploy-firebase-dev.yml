@@ -72,7 +72,7 @@ jobs:
           echo targets_app: $FIREBASE_RC_TARGETS_APP
 
           FIREBASE_RC_TARGETS=$(jq -n \
-            --arg "${{secrets.FIREBASE_PROJECT_ID}}" $FIREBASE_RC_TARGETS_APP \
+            --argjson "${{secrets.FIREBASE_PROJECT_ID}}" "$FIREBASE_RC_TARGETS_APP" \
             '$ARGS.named'
             )
 
