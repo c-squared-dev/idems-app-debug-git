@@ -70,9 +70,12 @@ jobs:
           touch firebase.json
           echo "<html lang="en"><body>Test</body></html>" > www/index.html
           echo ${{env.FIREBASE_JSON}} | jq '.'
+          echo ${{env.FIREBASE_JSON}} | jq '.hosting'
+          echo ${{env.FIREBASE_JSON}} | jq '.hosting[0]'
+          echo ${{env.FIREBASE_JSON}} | jq '.hosting[0].rewrites'
 
         env:
-          FIREBASE_JSON: '{"hosting":[{"target":"", "public":"www", "rewrites":[{"source":"**", "destination":"/index.html"]}]}'
+          FIREBASE_JSON: '{"hosting":[{"target":"", "public":"www", "rewrites":[{"source":"**", "destination":"/index.html"}]}]}'
 
       # Deploy to firebase
       - id: deploy
