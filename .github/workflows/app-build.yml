@@ -44,8 +44,7 @@ jobs:
           echo "$FIREBASE_CONFIG"
           echo "${{env.FIREBASE_CONFIG}}"
           echo "${{secrets.FIREBASE_CONFIG}}"
-        env:
-          DEPLOYMENT_PRIVATE_KEY_1: ${{secrets.DEPLOYMENT_PRIVATE_KEY}}
+
       - name: Populate Encryption key
         # if: env.DEPLOYMENT_PRIVATE_KEY != ''
         run: |
