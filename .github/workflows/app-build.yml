@@ -36,14 +36,15 @@ jobs:
           lfs: true
           path: ".idems_app/deployments/${{env.DEPLOYMENT_NAME}}"
       - name: Populate Encryption key
-        if: ${{env.DEPLOYMENT_PRIVATE_KEY != ''}}
-        run: echo $DEPLOYMENT_PRIVATE_KEY > .idems_app/deployments/$DEPLOYMENT_NAME/encrypted/private.key
+        if: ${{secrets.DEPLOYMENT_PRIVATE_KEY != ''}}
+        run: echo ${{secrets.DEPLOYMENT_PRIVATE_KEY}} > .idems_app/deployments/$DEPLOYMENT_NAME/encrypted/private.key
 
         # TODO - populate firebase as part of deployment set
-      - name: Populate firebase config
-        if: ${{env.FIREBASE_CONFIG != ''}}
+      - name: Populate Firebase Config
+        if: ${{secrets.FIREBASE_CONFIG != ''}}
         run: |
-          echo "export const firebaseConfig = $(echo $FIREBASE_CONFIG | jq '.') > src/environments/firebaseConfig.ts
+          echo "export const firebaseConfig = " > src/environments/firebaseConfig.ts
+          echo ${{secrets.FIREBASE_CONFIG}} | jq '.' >> src/environments/firebaseConfig.ts
           cat src/environments/firebaseConfig.ts
       - name: Setup Node
         uses: actions/setup-node@v3
