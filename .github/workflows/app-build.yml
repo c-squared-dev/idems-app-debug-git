@@ -35,9 +35,8 @@ jobs:
           path: ".idems_app/deployments/${{env.DEPLOYMENT_NAME}}"
       - name: Test
         run: |
-          echo $(${{env}} | jq '.')
-          echo $(${{secrets}} | jq '.')
-
+          echo $env
+          echo $secrets
       - name: Populate Encryption key
         # if: env.DEPLOYMENT_PRIVATE_KEY != ''
         run: |
