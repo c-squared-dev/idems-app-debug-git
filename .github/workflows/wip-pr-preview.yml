@@ -8,7 +8,7 @@ name: PR - Preview
 on:
   push:
     branches:
-      - content/*
+      - content_test/*
 jobs:
   build_action:
     uses: ./.github/workflows/app-build.yml
