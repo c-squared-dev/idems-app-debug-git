@@ -1,5 +1,17 @@
 import { generateDeploymentConfig } from "scripts";
+import { logWarning } from "scripts/src/utils";
 const config = generateDeploymentConfig("debug_git");
+
+// set firebase config if decrypted values available
+// try {
+//   const firebaseConfig = require("./encrypted/firebaseConfig.json");
+//   config.firebase = { ...firebaseConfig, enabled: true };
+// } catch {
+//   logWarning({
+//     msg1: "Deployment config requires encrypted data",
+//     msg2: "Decrypt config in order to access firebase functionality",
+//   });
+// }
 
 config.google_drive = {
   sheets_folder_id: "1ja6lzbphZaxnVv5mpQ4YHnn2qmxMiEBW",
