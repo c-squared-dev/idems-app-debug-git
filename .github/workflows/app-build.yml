@@ -35,9 +35,7 @@ jobs:
           path: ".idems_app/deployments/${{env.DEPLOYMENT_NAME}}"
       - name: Test
         run: |
-          echo ${{toJSON(secrets)}}
-           echo ${{toJSON(env)}}
-
+          echo "test_1 -  ${{secrets.test}}"
       - name: Populate Encryption key
         # if: env.DEPLOYMENT_PRIVATE_KEY != ''
         run: |
