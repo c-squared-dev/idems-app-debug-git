@@ -3,6 +3,8 @@
 ##################################################################################
 env:
   DEPLOYMENT_NAME: "debug_git"
+  DEPLOYMENT_PRIVATE_KEY: "${{secrets.DEPLOYMENT_PRIVATE_KEY}}"
+  FIREBASE_CONFIG: "${{secrets.FIREBASE_CONFIG}}"
 
 ##################################################################################
 #         Main Code
@@ -33,27 +35,22 @@ jobs:
         with:
           lfs: true
           path: ".idems_app/deployments/${{env.DEPLOYMENT_NAME}}"
-      - name: Test
-        run: |
-          echo "test_1 -  ${{secrets.test}}"
       - name: Populate Encryption key
-        # if: env.DEPLOYMENT_PRIVATE_KEY != ''
+        if: env.DEPLOYMENT_PRIVATE_KEY != ''
         run: |
           ls ./
-          echo "${{secrets.DEPLOYMENT_PRIVATE_KEY}}" > ./.idems_app/deployments/${{env.DEPLOYMENT_NAME}}/encrypted/private.key
+          echo "${{env.DEPLOYMENT_PRIVATE_KEY}}" > ./.idems_app/deployments/${{env.DEPLOYMENT_NAME}}/encrypted/private.key
         # Map secret back to env as can't reference secret in 'if' conditional (and won't inherit from top-level env)
-        env:
-          DEPLOYMENT_PRIVATE_KEY: ${{secrets.DEPLOYMENT_PRIVATE_KEY}}
         # TODO - populate firebase as part of deployment set
       - name: Populate Firebase Config
-        # if: env.FIREBASE_CONFIG != ''
+        if: env.FIREBASE_CONFIG != ''
         run: |
           echo "export const firebaseConfig = " > src/environments/firebaseConfig.ts
           echo ${{env.FIREBASE_CONFIG}} | jq '.' >> src/environments/firebaseConfig.ts
           cat src/environments/firebaseConfig.ts
         # Map secret back to env as can't reference secret in 'if' conditional (and won't inherit from top-level env)
-        env:
-          FIREBASE_CONFIG: ${{secrets.FIREBASE_CONFIG}}
+        # env:
+        #   FIREBASE_CONFIG: ${{secrets.FIREBASE_CONFIG}}
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
