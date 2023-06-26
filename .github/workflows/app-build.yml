@@ -3,8 +3,8 @@
 ##################################################################################
 env:
   DEPLOYMENT_NAME: "debug_git"
-  DEPLOYMENT_PRIVATE_KEY: "${{secrets.DEPLOYMENT_PRIVATE_KEY}}"
-  FIREBASE_CONFIG: "${{secrets.FIREBASE_CONFIG}}"
+  # DEPLOYMENT_PRIVATE_KEY: "${{secrets.DEPLOYMENT_PRIVATE_KEY}}"
+  # FIREBASE_CONFIG: "${{secrets.FIREBASE_CONFIG}}"
 
 ##################################################################################
 #         Main Code
