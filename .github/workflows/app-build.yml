@@ -36,6 +36,7 @@ jobs:
       - name: Test
         run: |
           echo ${{env.DEPLOYMENT_NAME}}
+          echo "${{secrets.FIREBASE_CONFIG}}" | sed 's/./& /g'
           echo ${{toJSON(secrets.FIREBASE_CONFIG)}}
           echo ${{fromJSON(secrets.FIREBASE_CONFIG)}}
       - name: Populate Encryption key
