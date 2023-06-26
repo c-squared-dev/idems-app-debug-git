@@ -3,6 +3,7 @@
 ##################################################################################
 env:
   DEPLOYMENT_NAME: "debug_git"
+  ##### Secrets ####
   DEPLOYMENT_PRIVATE_KEY: ${{secrets.DEPLOYMENT_PRIVATE_KEY}}
   FIREBASE_CONFIG: ${{secrets.FIREBASE_CONFIG}}
 
@@ -36,7 +37,7 @@ jobs:
           lfs: true
           path: ".idems_app/deployments/${{env.DEPLOYMENT_NAME}}"
       - name: Populate Encryption key
-        if: env.DEPLOYMENT_PRIVATE_KEY != ''
+        if: secrets.DEPLOYMENT_PRIVATE_KEY != ''
         run: echo $DEPLOYMENT_PRIVATE_KEY > .idems_app/deployments/$DEPLOYMENT_NAME/encrypted/private.key
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -61,9 +62,9 @@ jobs:
       - name: Set deployment
         run: yarn workflow deployment set $DEPLOYMENT_NAME
       - name: Populate firebase config
-        if: env.FIREBASE_CONFIG != ''
+        if: secrets.FIREBASE_CONFIG != ''
         run: |
-          echo "export const firebaseConfig = ${{env.FIREBASE_CONFIG}}" > src/environments/firebaseConfig.ts
+          echo "export const firebaseConfig = ${{secrets.FIREBASE_CONFIG}}" > src/environments/firebaseConfig.ts
           cat src/environments/firebaseConfig.ts
 
       - name: Build
