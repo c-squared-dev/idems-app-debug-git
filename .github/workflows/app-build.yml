@@ -36,6 +36,7 @@ jobs:
       - name: Test
         run: |
           echo ${{toJSON(secrets)}}
+           echo ${{toJSON(env)}}
 
       - name: Populate Encryption key
         # if: env.DEPLOYMENT_PRIVATE_KEY != ''
