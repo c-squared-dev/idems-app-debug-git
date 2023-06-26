@@ -36,14 +36,14 @@ jobs:
           lfs: true
           path: ".idems_app/deployments/${{env.DEPLOYMENT_NAME}}"
       - name: Populate Encryption key
-        if: ${{env.DEPLOYMENT_PRIVATE_KEY != ''}}
+        if: env.DEPLOYMENT_PRIVATE_KEY != ''
         run: echo ${{env.DEPLOYMENT_PRIVATE_KEY}} > .idems_app/deployments/$DEPLOYMENT_NAME/encrypted/private.key
         # Map secret back to env as can't reference secret in 'if' conditional (and won't inherit from top-level env)
         env:
           DEPLOYMENT_PRIVATE_KEY: ${{secrets.DEPLOYMENT_PRIVATE_KEY}}
         # TODO - populate firebase as part of deployment set
       - name: Populate Firebase Config
-        if: ${{env.FIREBASE_CONFIG != ''}}
+        if: env.FIREBASE_CONFIG != ''
         run: |
           echo "export const firebaseConfig = " > src/environments/firebaseConfig.ts
           echo ${{env.FIREBASE_CONFIG}} | jq '.' >> src/environments/firebaseConfig.ts

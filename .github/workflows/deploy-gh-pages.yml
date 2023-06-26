@@ -14,7 +14,7 @@ name: Deploy - GH Pages
 on:
   push:
     branches:
-      - main
+      - test/gh-pages
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 concurrency:
