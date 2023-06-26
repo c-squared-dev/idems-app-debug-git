@@ -59,9 +59,13 @@ jobs:
 
       # TODO - populate firebase as part of deployment set
       - name: Set deployment
+        run: yarn workflow deployment set $DEPLOYMENT_NAME
+      - name: Populate firebase config
+        if: env.FIREBASE_CONFIG != ''
         run: |
-          yarn workflow deployment set $DEPLOYMENT_NAME
           echo "export const firebaseConfig = ${{env.FIREBASE_CONFIG}}" > src/environments/firebaseConfig.ts
+          cat src/environments/firebaseConfig.ts
+
       - name: Build
         run: yarn build ${{inputs.build-flags}}
         # Use github pages upload artifact action as also compresses into tar
