@@ -3,8 +3,8 @@
 ##################################################################################
 env:
   DEPLOYMENT_NAME: "debug_git"
-  # DEPLOYMENT_PRIVATE_KEY: "${{secrets.DEPLOYMENT_PRIVATE_KEY}}"
-  # FIREBASE_CONFIG: "${{secrets.FIREBASE_CONFIG}}"
+  DEPLOYMENT_PRIVATE_KEY: "${{secrets.DEPLOYMENT_PRIVATE_KEY}}"
+  FIREBASE_CONFIG: "${{secrets.FIREBASE_CONFIG}}"
 
 ##################################################################################
 #         Main Code
@@ -35,6 +35,17 @@ jobs:
         with:
           lfs: true
           path: ".idems_app/deployments/${{env.DEPLOYMENT_NAME}}"
+      - name: Test
+        run: |
+          echo $DEPLOYMENT_PRIVATE_KEY
+          echo ${{env.DEPLOYMENT_PRIVATE_KEY}}
+          echo ${{secrets.DEPLOYMENT_PRIVATE_KEY}}
+          echo $DEPLOYMENT_PRIVATE_KEY_1
+          echo $FIREBASE_CONFIG
+          echo ${{env.FIREBASE_CONFIG}}
+          echo ${{secrets.FIREBASE_CONFIG}}
+        env:
+          DEPLOYMENT_PRIVATE_KEY_1: ${{secrets.DEPLOYMENT_PRIVATE_KEY}}
       - name: Populate Encryption key
         # if: env.DEPLOYMENT_PRIVATE_KEY != ''
         run: |
