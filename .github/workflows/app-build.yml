@@ -43,9 +43,8 @@ jobs:
       - name: Populate firebase config
         if: ${{env.FIREBASE_CONFIG != ''}}
         run: |
-          echo "export const firebaseConfig = ${{env.FIREBASE_CONFIG | jq '.'}}" > src/environments/firebaseConfig.ts
+          echo "export const firebaseConfig = $(echo $FIREBASE_CONFIG | jq '.') > src/environments/firebaseConfig.ts
           cat src/environments/firebaseConfig.ts
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
