@@ -1,5 +1,5 @@
 # IDEMS Template Metadata
-%TAG !idems_meta! id:deploy_firebase,version:20230629
+%TAG !idems_meta! id:deploy_firebase,version:1.0.0
 ---
 ##################################################################################
 #         About
@@ -43,7 +43,7 @@ jobs:
       artifact-name: www
     secrets: inherit
 
-  deploy_dev:
+  deploy:
     needs: build_action
     runs-on: ubuntu-latest
     outputs:
